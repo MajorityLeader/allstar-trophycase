@@ -6,6 +6,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Trophy Case Infographic_FINAL</title>
 <style id="applicationStylesheet" type="text/css">
+	@font-face {
+		font-family: "Intro Rust";
+		url("https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/IntroRustBase.otf") format("opentype");
+	}
 	.mediaViewInfo {
 		--web-view-name: Trophy Case Infographic_FINAL;
 		--web-view-id: Trophy_Case_Infographic_FINAL;
@@ -26889,7 +26893,7 @@
 ///////////////////////////////////////
 
 /**
- * Functionality for scaling, showing by media query, and navigation between multiple pages on a single page. 
+ * Functionality for scaling, showing by media query, and navigation between multiple pages on a single page.
  * Code subject to change.
  **/
 
@@ -27008,18 +27012,18 @@ var Application = function() {
 		if (self.initialized==false) {
 			if (self.enableDeepLinking) {
 				self.syncronizeViewToURL();
-			} 
-	
+			}
+
 			if (self.refreshPageForChanges) {
 				self.setupRefreshForChanges();
 			}
-	
+
 			self.initialized = true;
 		}
-		
+
 		if (self.scaleViewsToFit) {
 			self.viewScale = self.scaleViewToFit(view);
-			
+
 			if (self.viewScale<0) {
 				setTimeout(self.scaleViewToFit, 500, view);
 			}
@@ -27032,7 +27036,7 @@ var Application = function() {
 		else {
 			// no view found
 		}
-	
+
 		if (self.showUpdateNotification) {
 			self.showNotification();
 		}
@@ -27043,7 +27047,7 @@ var Application = function() {
 
 
 	///////////////////////////////////////
-	// AUTO REFRESH 
+	// AUTO REFRESH
 	///////////////////////////////////////
 
 	self.setupRefreshForChanges = function() {
@@ -27058,14 +27062,14 @@ var Application = function() {
 	}
 
 	/**
-	 * Attempt to check the last modified date by the headers 
+	 * Attempt to check the last modified date by the headers
 	 * or the last modified property from the byte array (experimental)
 	 **/
 	self.requestRefreshUpdate = function() {
 		var url = document.location.href;
 		var protocol = window.location.protocol;
 		var method;
-		
+
 		try {
 
 			if (self.refreshCheckContentSize) {
@@ -27093,20 +27097,20 @@ var Application = function() {
 
 					self.refreshRequest.onload = self.refreshOnLoadOnceHandler;
 
-					// In some browsers (Chrome & Safari) this error occurs at send: 
-					// 
-					// Chrome - Access to XMLHttpRequest at 'file:///index.html' from origin 'null' 
-					// has been blocked by CORS policy: 
-					// Cross origin requests are only supported for protocol schemes: 
+					// In some browsers (Chrome & Safari) this error occurs at send:
+					//
+					// Chrome - Access to XMLHttpRequest at 'file:///index.html' from origin 'null'
+					// has been blocked by CORS policy:
+					// Cross origin requests are only supported for protocol schemes:
 					// http, data, chrome, chrome-extension, https.
-					// 
+					//
 					// Safari - XMLHttpRequest cannot load file:///Users/user/Public/index.html. Cross origin requests are only supported for HTTP.
-					// 
+					//
 					// Solution is to run a local server, set local permissions or test in another browser
 					self.refreshRequest.send(null);
 
-					// In MS browsers the following behavior occurs possibly due to an AJAX call to check last modified date: 
-					// 
+					// In MS browsers the following behavior occurs possibly due to an AJAX call to check last modified date:
+					//
 					// DOM7011: The code on this page disabled back and forward caching.
 
 					// In Brave (Chrome) error when on the server
@@ -27120,7 +27124,7 @@ var Application = function() {
 					self.refreshRequest.ontimeout = function() {
 						self.log("Couldn't find page to check for updates");
 					}
-					
+
 					var method;
 					if (protocol=="file:") {
 						method = "GET";
@@ -27148,8 +27152,8 @@ var Application = function() {
 		try {
 
 			if (self.refreshRequest.readyState === XMLHttpRequest.DONE) {
-				
-				if (self.refreshRequest.status === 2 || 
+
+				if (self.refreshRequest.status === 2 ||
 					self.refreshRequest.status === 200) {
 					var pageChanged = false;
 
@@ -27161,7 +27165,7 @@ var Application = function() {
 						//lastModifiedDate = refreshRequest.getResponseHeader("Last-Modified");
 						var headers = self.refreshRequest.getAllResponseHeaders();
 						var hasContentHeader = headers.indexOf("Content-Length")!=-1;
-						
+
 						if (hasContentHeader) {
 							contentSize = self.refreshRequest.getResponseHeader("Content-Length");
 
@@ -27193,7 +27197,7 @@ var Application = function() {
 
 					}
 
-					
+
 					if (pageChanged) {
 						clearInterval(self.refreshInterval);
 						self.refreshUpdatedPage();
@@ -27256,7 +27260,7 @@ var Application = function() {
 		notification.setAttribute("style", styleRule);
 
 		notification.className= "PageRefreshedClass";
-		
+
 		document.body.appendChild(notification);
 
 		setTimeout(function() {
@@ -27271,7 +27275,7 @@ var Application = function() {
 	}
 
 	/**
-	 * Get the last modified date from the header 
+	 * Get the last modified date from the header
 	 * or file object after request has been received
 	 **/
 	self.getLastModified = function(request) {
@@ -27281,7 +27285,7 @@ var Application = function() {
 		if (request.response && request.response.lastModified) {
 			date = request.response.lastModified;
 		}
-		
+
 		// http protocol - check headers
 		if (date==null) {
 			date = request.getResponseHeader("Last-Modified");
@@ -27292,7 +27296,7 @@ var Application = function() {
 
 	self.updateLastModifiedLabel = function() {
 		var labelValue = "";
-		
+
 		if (self.lastModifiedLabel==null) {
 			self.lastModifiedLabel = document.getElementById("LastModifiedLabel");
 		}
@@ -27318,7 +27322,7 @@ var Application = function() {
 					labelValue += minutes==1 ? " minute" : " minutes";
 				}
 			}
-			
+
 			if (seconds<10) {
 				labelValue = "Updated now";
 			}
@@ -27435,7 +27439,7 @@ var Application = function() {
 	self.getStylesheetRules = function(styleSheet) {
 		try {
 			if (styleSheet) return styleSheet.cssRules || styleSheet.rules;
-	
+
 			return document.styleSheets[0]["cssRules"] || document.styleSheets[0]["rules"];
 		}
 		catch (error) {
@@ -27455,7 +27459,7 @@ var Application = function() {
 	}
 
 	/**
-	 * If single page application hide all of the views. 
+	 * If single page application hide all of the views.
 	 * @param {Number} selectedIndex if provided shows the view at index provided
 	 **/
 	self.hideViews = function(selectedIndex, animation) {
@@ -27483,7 +27487,7 @@ var Application = function() {
 						self.disableMediaQuery(rule);
 					}
 				}
-				
+
 				queryIndex++;
 			}
 		}
@@ -27625,7 +27629,7 @@ var Application = function() {
 		var display = null;
 		var reparent = true;
 		var view = null;
-		
+
 		if (overlay==null || overlay==false) {
 			self.log("Overlay not found, '"+ id + "'");
 			return;
@@ -27650,7 +27654,7 @@ var Application = function() {
 				event.stopImmediatePropagation();
 			}
 		}
-		
+
 		if (self.application==false || targetType=="page") {
 			document.location.href = "./" + actionTargetValue;
 			return;
@@ -27682,9 +27686,9 @@ var Application = function() {
 			//self.setElementAnimation(overlay, null);
 			//overlay.style.animation = animation;
 			self.enableMediaQuery(query);
-			
+
 			var display = overlay && overlay.style.display;
-			
+
 			if (overlay && display=="" || display=="none") {
 				overlay.style.display = "block";
 				//self.setViewOptions(overlay);
@@ -27722,11 +27726,11 @@ var Application = function() {
 		anchorTop = self.getIsStyleDefined(id, "top");
 		anchorBottom = self.getIsStyleDefined(id, "bottom");
 
-		
+
 		if (self.viewsDictionary[overlay.id] && self.viewsDictionary[overlay.id].styleDeclaration) {
 			style = self.viewsDictionary[overlay.id].styleDeclaration.style;
 		}
-		
+
 		if (centerHorizontally) {
 			style.left = "50%";
 			style.transformOrigin = "0 0";
@@ -27741,7 +27745,7 @@ var Application = function() {
 		else {
 			style.left = x + "px";
 		}
-		
+
 		if (centerVertically) {
 			style.top = "50%";
 			transform.push("translateY(-50%)");
@@ -27780,12 +27784,12 @@ var Application = function() {
 
 		if (overlay) {
 			var style = overlay.style;
-			
+
 			if (style.animation && self.supportAnimations && animate) {
 				self.reverseAnimation(overlay, true);
 
 				var duration = self.getAnimationDuration(style.animation, true);
-		
+
 				setTimeout(function() {
 					self.setElementAnimation(overlay, null);
 					self.hideOverlay(overlay);
@@ -27816,10 +27820,10 @@ var Application = function() {
 
 		if (hide) {
 			//target.addEventListener("animationend", self.animationEndHideHandler);
-	
+
 			var duration = self.getAnimationDuration(lastAnimation, true);
 			var isOverlay = self.isOverlay(target);
-	
+
 			setTimeout(function() {
 				self.setElementAnimation(target, null);
 
@@ -27891,7 +27895,7 @@ var Application = function() {
 
 			if (self.scaleViewsToFit) {
 				var newScaleValue = self.scaleViewToFit(view);
-				
+
 				if (newScaleValue<0) {
 					setTimeout(self.scaleViewToFit, 500, view);
 				}
@@ -27932,7 +27936,7 @@ var Application = function() {
 		// loop through rules and hide media queries except selected
 		for (var i=0;i<numberOfRules;i++) {
 			var rule = rules[i];
-			
+
 			if (rule.media!=null) {
 
 				if (queryIndex==prevQueryIndex) {
@@ -27973,7 +27977,7 @@ var Application = function() {
 		// loop through rules and hide media queries except selected
 		for (var i=0;i<numberOfRules;i++) {
 			var rule = rules[i];
-			
+
 			if (rule.media!=null) {
 
 				if (queryIndex==nextQueryIndex) {
@@ -28036,12 +28040,12 @@ var Application = function() {
 		for (var i=0;i<numberOfRules;i++) {
 			if (rules[i].media!=null) { numberOfQueries++; }
 		}
-		
+
 		return numberOfQueries;
 	}
 
 	/////////////////////////////////////////
-	// VIEW SCALE 
+	// VIEW SCALE
 	/////////////////////////////////////////
 
 	self.sliderChangeHandler = function(event) {
@@ -28055,7 +28059,7 @@ var Application = function() {
 		var tooltip = parseInt(scale * 100 + "") + "%";
 		var inputType;
 		var inputValue;
-		
+
 		if (slider) {
 			inputValue = self.getShortNumber(scale * 100);
 			if (inputValue!=slider["value"]) {
@@ -28075,13 +28079,13 @@ var Application = function() {
 	self.viewChangeHandler = function(event) {
 		var view = self.getVisibleView();
 		var matrix = view ? getComputedStyle(view).transform : null;
-		
+
 		if (matrix) {
 			self.viewScale = self.getViewScaleValue(view);
-			
+
 			var scaleNeededToFit = self.getViewFitToViewportScale(view);
 			var isViewLargerThanViewport = scaleNeededToFit<1;
-			
+
 			// scale large view to fit if scale to fit is enabled
 			if (self.scaleViewsToFit) {
 				self.scaleViewToFit(view);
@@ -28106,7 +28110,7 @@ var Application = function() {
 	}
 
 	/**
-	 * Scales view to scale. 
+	 * Scales view to scale.
 	 * @param {Object} view view to scale. views are in views array
 	 * @param {Boolean} scaleToFit set to true to scale to fit. set false to use desired scale value
 	 * @param {Number} desiredScale scale to define. not used if scale to fit is false
@@ -28159,7 +28163,7 @@ var Application = function() {
 		}
 
 		self.updateSliderValue(desiredScale);
-		
+
 		// scale to fit width
 		if (scaleToWidth && scaleToHeight==false) {
 			canCenterVertically = scaleNeededToFitHeight>=scaleNeededToFitWidth;
@@ -28204,7 +28208,7 @@ var Application = function() {
 					translateY = "0";
 					topPosition = "0";
 				}
-				
+
 				if (style.top != topPosition) {
 					style.top = topPosition + "";
 				}
@@ -28251,7 +28255,7 @@ var Application = function() {
 			//canCenterHorizontally = scaleNeededToFitHeight<=scaleNeededToFitWidth && enableScaleUp==false;
 			canCenterVertically = scaleNeededToFitHeight>=scaleNeededToFitWidth;
 			canCenterHorizontally = scaleNeededToFitWidth>=1 && enableScaleUp==false;
-			
+
 			if (isSliderChange) {
 				canCenterHorizontally = desiredScale<scaleToFitFullHeight;
 			}
@@ -28311,7 +28315,7 @@ var Application = function() {
 					translateY = "0";
 					topPosition = "0";
 				}
-				
+
 				if (style.top != topPosition) {
 					style.top = topPosition + "";
 				}
@@ -28357,7 +28361,7 @@ var Application = function() {
 
 			//canCenterHorizontally = self.canCenterHorizontally(view, "fit", false, desiredScale);
 			//canCenterVertically = self.canCenterVertically(view, "fit", false, desiredScale);
-			
+
 			if (self.centerVertically) {
 				if (canCenterVertically) {
 					translateY = "-50%";
@@ -28367,7 +28371,7 @@ var Application = function() {
 					translateY = "0";
 					topPosition = "0";
 				}
-				
+
 				if (style.top != topPosition) {
 					style.top = topPosition + "";
 				}
@@ -28406,7 +28410,7 @@ var Application = function() {
 			self.viewTop = topPosition;
 
 			self.updateSliderValue(desiredScale);
-			
+
 			return desiredScale;
 		}
 
@@ -28432,7 +28436,7 @@ var Application = function() {
 					translateY = "0";
 					topPosition = "0";
 				}
-				
+
 				if (style.top != topPosition) {
 					style.top = topPosition + "";
 				}
@@ -28475,7 +28479,7 @@ var Application = function() {
 			self.viewTop = topPosition;
 
 			self.updateSliderValue(desiredScale);
-			
+
 			return desiredScale;
 		}
 	}
@@ -28484,8 +28488,8 @@ var Application = function() {
 	 * Returns true if view can be centered horizontally
 	 * @param {HTMLElement} view view
 	 * @param {String} type type of scaling - width, height, all, none
-	 * @param {Boolean} scaleUp if scale up enabled 
-	 * @param {Number} scale target scale value 
+	 * @param {Boolean} scaleUp if scale up enabled
+	 * @param {Number} scale target scale value
 	 */
 	self.canCenterHorizontally = function(view, type, scaleUp, scale, minimumScale, maximumScale) {
 		var scaleNeededToFit = self.getViewFitToViewportScale(view, scaleUp);
@@ -28499,7 +28503,7 @@ var Application = function() {
 		scaleUp = scaleUp == null ? false : scaleUp;
 
 		if (type=="width") {
-	
+
 			if (scaleUp && maximumScale==null) {
 				canCenter = false;
 			}
@@ -28520,7 +28524,7 @@ var Application = function() {
 					minScale = Math.max(minimumScale, Math.min(maximumScale, scaleNeededToFitHeight));
 				}
 			}
-	
+
 			if (scaleUp && maximumScale=="") {
 				canCenter = false;
 			}
@@ -28541,7 +28545,7 @@ var Application = function() {
 		}
 
 		self.horizontalScrollbarsNeeded = canCenter;
-		
+
 		return canCenter;
 	}
 
@@ -28549,8 +28553,8 @@ var Application = function() {
 	 * Returns true if view can be centered horizontally
 	 * @param {HTMLElement} view view to scale
 	 * @param {String} type type of scaling
-	 * @param {Boolean} scaleUp if scale up enabled 
-	 * @param {Number} scale target scale value 
+	 * @param {Boolean} scaleUp if scale up enabled
+	 * @param {Number} scale target scale value
 	 */
 	self.canCenterVertically = function(view, type, scaleUp, scale, minimumScale, maximumScale) {
 		var scaleNeededToFit = self.getViewFitToViewportScale(view, scaleUp);
@@ -28562,7 +28566,7 @@ var Application = function() {
 		type = type==null ? "none" : type;
 		scale = scale==null ? 1 : scale;
 		scaleUp = scaleUp == null ? false : scaleUp;
-	
+
 		if (type=="width") {
 			canCenter = scaleNeededToFitHeight>=scaleNeededToFitWidth;
 		}
@@ -28583,7 +28587,7 @@ var Application = function() {
 		}
 
 		self.verticalScrollbarsNeeded = canCenter;
-		
+
 		return canCenter;
 	}
 
@@ -28609,7 +28613,7 @@ var Application = function() {
 		else if (elementWidth > availableWidth || elementHeight > availableHeight) {
 			newScale = Math.min(availableHeight/elementHeight, availableWidth/elementWidth);
 		}
-		
+
 		return newScale;
 	}
 
@@ -28634,7 +28638,7 @@ var Application = function() {
 		else if (elementWidth > availableWidth) {
 			newScale = availableWidth/elementWidth;
 		}
-		
+
 		return newScale;
 	}
 
@@ -28657,22 +28661,22 @@ var Application = function() {
 		else if (elementHeight > availableHeight) {
 			newScale = availableHeight/elementHeight;
 		}
-		
+
 		return newScale;
 	}
 
 	self.keypressHandler = function(event) {
 		var rightKey = 39;
 		var leftKey = 37;
-		
-		// listen for both events 
+
+		// listen for both events
 		if (event.type=="keypress") {
 			window.removeEventListener("keyup", self.keypressHandler);
 		}
 		else {
 			window.removeEventListener("keypress", self.keypressHandler);
 		}
-		
+
 		if (self.showNavigationControls) {
 			if (self.navigationOnKeypress) {
 				if (event.keyCode==rightKey) {
@@ -28730,7 +28734,7 @@ var Application = function() {
 
 	self.getVisibleView = function() {
 		var viewIds = self.getViewIds();
-		
+
 		for (var i=0;i<viewIds.length;i++) {
 			var viewId = viewIds[i].replace(/[\#?\.?](.*)/, "$" + "1");
 			var view = self.getElement(viewId);
@@ -28739,10 +28743,10 @@ var Application = function() {
 			if (view==null && viewId && viewId.lastIndexOf(postName)!=-1) {
 				view = self.getElement(viewId.replace(postName, ""));
 			}
-			
+
 			if (view) {
 				var display = getComputedStyle(view).display;
-		
+
 				if (display=="block" || display=="flex") {
 					return view;
 				}
@@ -28755,7 +28759,7 @@ var Application = function() {
 	self.getVisibleViews = function() {
 		var viewIds = self.getViewIds();
 		var views = [];
-		
+
 		for (var i=0;i<viewIds.length;i++) {
 			var viewId = viewIds[i].replace(/[\#?\.?](.*)/, "$" + "1");
 			var view = self.getElement(viewId);
@@ -28764,10 +28768,10 @@ var Application = function() {
 			if (view==null && viewId && viewId.lastIndexOf(postName)!=-1) {
 				view = self.getElement(viewId.replace(postName, ""));
 			}
-			
+
 			if (view) {
 				var display = getComputedStyle(view).display;
-				
+
 				if (display=="none") {
 					continue;
 				}
@@ -28794,10 +28798,10 @@ var Application = function() {
 			for (let index = 0; index < views.length; index++) {
 				var viewId = views[index];
 				var state = self.viewsDictionary[viewId];
-				var rule = state && state.rule; 
+				var rule = state && state.rule;
 				var matchResults = window.matchMedia(rule.conditionText);
 				var view = self.views[viewId];
-				
+
 				if (matchResults.matches) {
 					if (ids==true) {
 						matchingViews.push(viewId);
@@ -28833,7 +28837,7 @@ var Application = function() {
 				var viewStateName = self.getStyleRuleValue(mediaRule, self.STATE_NAME, state);
 				var stateFoundAtt = view.getAttribute(self.STATE_NAME)==state;
 				var matchesResults = false;
-				
+
 				if (viewStateName==stateName) {
 					if (matchQuery) {
 						matchesResults = self.ruleMatchesQuery(rule);
@@ -28878,12 +28882,12 @@ var Application = function() {
 
 		if (self.showByMediaQuery) {
 			var stateName = fragment;
-			
+
 			if (stateName==null || stateName=="") {
 				var initialView = self.getInitialView();
 				stateName = initialView ? self.getStateNameByViewId(initialView.id) : null;
 			}
-			
+
 			self.showMediaQueryViewsByState(stateName);
 			return;
 		}
@@ -28902,7 +28906,7 @@ var Application = function() {
 				window.history.pushState({name:currentView.id}, null, "#"+ currentView.id);
 			}
 		}
-		
+
 		self.setViewVariables(view);
 		return view;
 	}
@@ -28930,7 +28934,7 @@ var Application = function() {
 		var computedStyle = window.getComputedStyle(view);
 		var value = computedStyle.getPropertyValue(property);
 		var type = typeof value;
-		
+
 		if (value=="true" || (type=="string" && value.indexOf("true")!=-1)) {
 			return true;
 		}
@@ -28947,10 +28951,10 @@ var Application = function() {
 		if (value===undefined) {
 			return defaultValue;
 		}
-		
+
 		value = value.replace(/^[\s\"]*/, "");
 		value = value.replace(/[\s\"]*$/, "");
-		value = value.replace(/^[\s"]*(.*?)[\s"]*$/, function (match, capture) { 
+		value = value.replace(/^[\s"]*(.*?)[\s"]*$/, function (match, capture) {
 			return capture;
 		});
 
@@ -28963,10 +28967,10 @@ var Application = function() {
 		if (value===undefined) {
 			return null;
 		}
-		
+
 		value = value.replace(/^[\s\"]*/, "");
 		value = value.replace(/[\s\"]*$/, "");
-		value = value.replace(/^[\s"]*(.*?)[\s"]*$/, function (match, capture) { 
+		value = value.replace(/^[\s"]*(.*?)[\s"]*$/, function (match, capture) {
 			return capture;
 		});
 
@@ -28976,7 +28980,7 @@ var Application = function() {
 	/**
 	 * Get the first defined value of property. Returns empty string if not defined
 	 * @param {String} id id of element
-	 * @param {String} property 
+	 * @param {String} property
 	 */
 	self.getCSSPropertyValueForElement = function(id, property) {
 		var styleSheets = document.styleSheets;
@@ -28991,19 +28995,19 @@ var Application = function() {
 			var cssRules = self.getStylesheetRules(styleSheet);
 			var numOfCSSRules = cssRules.length;
 			var cssRule;
-			
+
 			for (var j=0;j<numOfCSSRules;j++) {
 				cssRule = cssRules[j];
-				
+
 				if (cssRule.media) {
 					var mediaRules = cssRule.cssRules;
 					var numOfMediaRules = mediaRules ? mediaRules.length : 0;
-					
+
 					for(var k=0;k<numOfMediaRules;k++) {
 						var mediaRule = mediaRules[k];
-						
+
 						if (mediaRule.selectorText==selectorIDText || mediaRule.selectorText==selectorClassText) {
-							
+
 							if (mediaRule.style && mediaRule.style.getPropertyValue(property)!="") {
 								value = mediaRule.style.getPropertyValue(property);
 								values.push(value);
@@ -29039,7 +29043,7 @@ var Application = function() {
 			const view = self.getElement(id);
 			self.views[id] = view;
 		}
-		
+
 		self.viewIds = viewIds;
 	}
 
@@ -29051,13 +29055,13 @@ var Application = function() {
 			const id = viewIds[index];
 			const view = self.getViewById(id);
 			const isOverlay = view && self.isOverlay(view);
-			
+
 			if (isOverlay) {
 				ids.push(id);
 				self.overlays[id] = view;
 			}
 		}
-		
+
 		self.overlayIds = ids;
 	}
 
@@ -29076,21 +29080,21 @@ var Application = function() {
 		var property = self.prefix + "view-id";
 		var stateName = self.prefix + "state";
 		var stateValue;
-		
+
 		for (var j=0;j<numOfCSSRules;j++) {
 			cssRule = cssRules[j];
-			
+
 			if (cssRule.media) {
 				var mediaRules = cssRule.cssRules;
 				var numOfMediaRules = mediaRules ? mediaRules.length : 0;
 				var mediaViewInfoFound = false;
 				var mediaId = null;
-				
+
 				for(var k=0;k<numOfMediaRules;k++) {
 					var mediaRule = mediaRules[k];
 
 					selectorText = mediaRule.selectorText;
-					
+
 					if (selectorText==".mediaViewInfo" && mediaViewInfoFound==false) {
 
 						mediaId = self.getStyleRuleValue(mediaRule, property);
@@ -29098,7 +29102,7 @@ var Application = function() {
 
 						selectorIDText = "#" + mediaId;
 						selectorClassText = "." + mediaId + "_Class";
-						
+
 						// prevent duplicates from load and domcontentloaded events
 						if (self.addedViews.indexOf(mediaId)==-1) {
 							self.addView(mediaId, cssRule, mediaRule, stateValue);
@@ -29200,7 +29204,7 @@ var Application = function() {
 		var targetState = targetView ? self.getStateNameByViewId(targetView.id) : null;
 		var actionTargetStyles = targetView ? targetView.style : null;
 		var state = self.viewsDictionary[actionTargetValue];
-		
+
 		// navigate to page
 		if (self.application==false || targetType=="page") {
 			document.location.href = "./" + actionTargetValue;
@@ -29216,7 +29220,7 @@ var Application = function() {
 
 			if (self.showByMediaQuery) {
 				var stateName = targetState;
-				
+
 				if (stateName==null || stateName=="") {
 					var initialView = self.getInitialView();
 					stateName = initialView ? self.getStateNameByViewId(initialView.id) : null;
@@ -29261,7 +29265,7 @@ var Application = function() {
 			var duration = self.getAnimationDuration(animation, true);
 
 			// if target view is above (higher index)
-			// then fade in target view 
+			// then fade in target view
 			// and after fade in then hide previous view instantly
 			if (fromIndex<toIndex) {
 				self.setElementAnimation(from, null);
@@ -29279,7 +29283,7 @@ var Application = function() {
 				}, duration)
 			}
 			// if target view is on bottom
-			// then show target view instantly 
+			// then show target view instantly
 			// and fade out current view
 			else if (fromIndex>toIndex) {
 				self.setElementAnimation(to, null);
@@ -29313,7 +29317,7 @@ var Application = function() {
 		}
 
 		self.setElementAnimation(element, null);
-		
+
 		element.style.animation = animation;
 	}
 
@@ -29377,7 +29381,7 @@ var Application = function() {
 	}
 
 	self.resizeHandler = function(event) {
-		
+
 		if (self.showByMediaQuery) {
 			if (self.enableDeepLinking) {
 				var stateName = self.getHashFragment();
@@ -29392,7 +29396,7 @@ var Application = function() {
 		else {
 			var visibleViews = self.getVisibleViews();
 
-			for (let index = 0; index < visibleViews.length; index++) {	
+			for (let index = 0; index < visibleViews.length; index++) {
 				var view = visibleViews[index];
 				self.scaleViewIfNeeded(view);
 			}
@@ -29456,8 +29460,8 @@ var Application = function() {
 		// but if multiple views exists at same size user may want specific view
 		// if showStateFunction is defined that is called with state fragment and user can show or hide each media matching view by returning true or false
 		// if showStateFunction is not defined and state is defined and view has a defined state that matches then show that and hide other matching views
-		// if no state is defined show view 
-		// an viewChanging event is dispatched before views are shown or hidden that can be prevented 
+		// if no state is defined show view
+		// an viewChanging event is dispatched before views are shown or hidden that can be prevented
 
 		// get all matched queries
 		// if state name is specified then show that view and hide other views
@@ -29468,10 +29472,10 @@ var Application = function() {
 		var showViews = [];
 		var hideViews = [];
 
-		// loop views that match media query 
+		// loop views that match media query
 		for (let index = 0; index < matchedViews.length; index++) {
 			var view = matchedViews[index];
-			
+
 			// let user determine visible view
 			if (self.showStateFunction!=null) {
 				if (self.showStateFunction(view, state)) {
@@ -29533,7 +29537,7 @@ var Application = function() {
 			viewChangeEvent.hideViews = hideViews;
 			window.dispatchEvent(viewChangeEvent);
 		}
-		
+
 	}
 
 	self.clearDisplay = function(view) {
@@ -29559,7 +29563,7 @@ var Application = function() {
 				self.showView(view);
 				self.setViewVariables(view);
 				self.updateViewLabel();
-				
+
 				window.dispatchEvent(new Event(self.VIEW_CHANGE));
 			}
 			else {
@@ -29607,7 +29611,7 @@ var Application = function() {
 		if (self.scaleToFitOnDoubleClick && self.actualSizeOnDoubleClick) {
 			var isViewScaled = view.getAttributeNS(null, self.SIZE_STATE_NAME);
 			var isScaled = false;
-			
+
 			// if scale is not 1 then view needs scaling
 			if (scaleNeededToFit!=1) {
 
@@ -29624,14 +29628,14 @@ var Application = function() {
 				}
 			}
 			else {
-				// view is smaller than viewport 
+				// view is smaller than viewport
 				// so scale to fit() is scale actual size
 				// actual size and scaled size are the same
 				// but call scale to fit to retain centering
 				self.scaleViewToFit(view);
 				isScaled = false;
 			}
-			
+
 			view.setAttributeNS(null, self.SIZE_STATE_NAME, isScaled+"");
 			isViewScaled = view.getAttributeNS(null, self.SIZE_STATE_NAME);
 		}
@@ -29663,25 +29667,25 @@ var Application = function() {
 
 	self.getStackArray = function(error) {
 		var value = "";
-		
+
 		if (error==null) {
 		  try {
 			 error = new Error("Stack");
 		  }
 		  catch (e) {
-			 
+
 		  }
 		}
-		
+
 		if ("stack" in error) {
 		  value = error.stack;
 		  var methods = value.split(/\n/g);
-	 
+
 		  var newArray = methods ? methods.map(function (value, index, array) {
 			 value = value.replace(/\@.*/,"");
 			 return value;
 		  }) : null;
-	 
+
 		  if (newArray && newArray[0].includes("getStackTrace")) {
 			 newArray.shift();
 		  }
@@ -29691,17 +29695,17 @@ var Application = function() {
 		  if (newArray && newArray[0]=="") {
 			 newArray.shift();
 		  }
-	 
+
 			return newArray;
 		}
-		
+
 		return null;
 	}
 
 	self.log = function(value) {
 		console.log.apply(this, [value]);
 	}
-	
+
 	// initialize on load
 	// sometimes the body size is 0 so we call this now and again later
 	window.addEventListener("load", self.onloadHandler);
@@ -29723,7 +29727,7 @@ window.application = new Application();
 				<ellipse id="Ellipse_26" rx="69.51041412353516" ry="69.51041412353516" cx="69.51041412353516" cy="69.51041412353516">
 				</ellipse>
 			</svg>
-			<img id="Group_165" src="Group_165.png" srcset="Group_165.png 1x, Group_165@2x.png 2x">
+			<img id="Group_165" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_165.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_165.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_165@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_649" viewBox="246.999 125.539 79.519 67.195">
@@ -30045,7 +30049,7 @@ window.application = new Application();
 				<path id="Path_78" d="M 132.2669982910156 125.3003005981445 C 132.2669982910156 113.4362335205078 141.8872222900391 103.8160018920898 153.7513122558594 103.8160018920898 C 165.6153869628906 103.8160018920898 175.2356262207031 113.4362335205078 175.2356262207031 125.3003005981445 C 175.2356262207031 137.1643829345703 165.6153869628906 146.7846069335938 153.7513122558594 146.7846069335938 C 141.8872222900391 146.7846069335938 132.2669982910156 137.1643829345703 132.2669982910156 125.3003005981445 Z">
 				</path>
 			</svg>
-			<img id="Group_125" src="Group_125.png" srcset="Group_125.png 1x, Group_125@2x.png 2x">
+			<img id="Group_125" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_125.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_125.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_125@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_139" viewBox="135.059 105.748 24.012 23.531">
@@ -30059,7 +30063,7 @@ window.application = new Application();
 				<path id="Path_140" d="M 87.02699279785156 121.977897644043 C 87.02699279785156 110.1138229370117 96.64726257324219 100.4969940185547 108.5113067626953 100.4969940185547 C 120.3753967285156 100.4969940185547 129.99560546875 110.1138229370117 129.99560546875 121.977897644043 C 129.99560546875 133.8453674316406 120.3753967285156 143.4621887207031 108.5113067626953 143.4621887207031 C 96.64726257324219 143.4621887207031 87.02699279785156 133.8453674316406 87.02699279785156 121.977897644043 Z">
 				</path>
 			</svg>
-			<img id="Group_129" src="Group_129.png" srcset="Group_129.png 1x, Group_129@2x.png 2x">
+			<img id="Group_129" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_129.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_129.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_129@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_201" viewBox="89.819 102.428 24.012 23.531">
@@ -30073,7 +30077,7 @@ window.application = new Application();
 				<path id="Path_140_c" d="M 87.02699279785156 112.7200698852539 C 87.02699279785156 105.9691619873047 92.50112915039062 100.4969940185547 99.25200653076172 100.4969940185547 C 106.0029144287109 100.4969940185547 111.4770202636719 105.9691619873047 111.4770202636719 112.7200698852539 C 111.4770202636719 119.472900390625 106.0029144287109 124.945068359375 99.25200653076172 124.945068359375 C 92.50112915039062 124.945068359375 87.02699279785156 119.472900390625 87.02699279785156 112.7200698852539 Z">
 				</path>
 			</svg>
-			<img id="Group_129_c" src="Group_129_c.png" srcset="Group_129_c.png 1x, Group_129_c@2x.png 2x">
+			<img id="Group_129_c" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_129_c.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_129_c.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_129_c@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_201_da" viewBox="89.819 102.428 13.663 13.39">
@@ -30087,7 +30091,7 @@ window.application = new Application();
 				<path id="Path_202" d="M 80.698974609375 140.69091796875 C 80.698974609375 128.8268432617188 90.31584167480469 119.2100067138672 102.1799240112305 119.2100067138672 C 114.0474014282227 119.2100067138672 123.6642456054688 128.8268432617188 123.6642456054688 140.69091796875 C 123.6642456054688 152.5583801269531 114.0474014282227 162.1752624511719 102.1799240112305 162.1752624511719 C 90.31584167480469 162.1752624511719 80.698974609375 152.5583801269531 80.698974609375 140.69091796875 Z">
 				</path>
 			</svg>
-			<img id="Group_133" src="Group_133.png" srcset="Group_133.png 1x, Group_133@2x.png 2x">
+			<img id="Group_133" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_133.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_133.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_133@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_263" viewBox="83.491 121.141 24.012 23.531">
@@ -30101,7 +30105,7 @@ window.application = new Application();
 				<path id="Path_202_di" d="M 80.698974609375 140.69091796875 C 80.698974609375 128.8268432617188 90.31584167480469 119.2100067138672 102.1799240112305 119.2100067138672 C 114.0474014282227 119.2100067138672 123.6642456054688 128.8268432617188 123.6642456054688 140.69091796875 C 123.6642456054688 152.5583801269531 114.0474014282227 162.1752624511719 102.1799240112305 162.1752624511719 C 90.31584167480469 162.1752624511719 80.698974609375 152.5583801269531 80.698974609375 140.69091796875 Z">
 				</path>
 			</svg>
-			<img id="Group_133_dj" src="Group_133_dj.png" srcset="Group_133_dj.png 1x, Group_133_dj@2x.png 2x">
+			<img id="Group_133_dj" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_133_dj.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_133_dj.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_133_dj@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_263_dk" viewBox="83.491 121.141 24.012 23.531">
@@ -30115,7 +30119,7 @@ window.application = new Application();
 				<path id="Path_264" d="M 23.33300018310547 126.8903274536133 C 23.33300018310547 115.026252746582 32.95324325561523 105.4059829711914 44.81731414794922 105.4059829711914 C 56.68138885498047 105.4059829711914 66.3016357421875 115.026252746582 66.3016357421875 126.8903274536133 C 66.3016357421875 138.75439453125 56.68138885498047 148.3746643066406 44.81731414794922 148.3746643066406 C 32.95324325561523 148.3746643066406 23.33300018310547 138.75439453125 23.33300018310547 126.8903274536133 Z">
 				</path>
 			</svg>
-			<img id="Group_137" src="Group_137.png" srcset="Group_137.png 1x, Group_137@2x.png 2x">
+			<img id="Group_137" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_137.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_137.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_137@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_325" viewBox="26.125 107.337 24.012 23.531">
@@ -30129,7 +30133,7 @@ window.application = new Application();
 				<ellipse id="Ellipse_18" rx="21.483642578125" ry="21.483642578125" cx="21.483642578125" cy="21.483642578125">
 				</ellipse>
 			</svg>
-			<img id="Group_141" src="Group_141.png" srcset="Group_141.png 1x, Group_141@2x.png 2x">
+			<img id="Group_141" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_141.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_141.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_141@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_385" viewBox="43.253 98.03 24.012 23.531">
@@ -30143,7 +30147,7 @@ window.application = new Application();
 				<ellipse id="Ellipse_18_dx" rx="17.080726623535156" ry="17.080726623535156" cx="17.080726623535156" cy="17.080726623535156">
 				</ellipse>
 			</svg>
-			<img id="Group_141_dy" src="Group_141_dy.png" srcset="Group_141_dy.png 1x, Group_141_dy@2x.png 2x">
+			<img id="Group_141_dy" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_141_dy.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_141_dy.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_141_dy@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_385_dz" viewBox="43.253 98.03 19.091 18.709">
@@ -30157,7 +30161,7 @@ window.application = new Application();
 				<path id="Path_386" d="M 187.6539916992188 126.0313339233398 C 187.6539916992188 114.1672134399414 197.2742614746094 104.5469818115234 209.1382751464844 104.5469818115234 C 221.0023193359375 104.5469818115234 230.6226043701172 114.1672134399414 230.6226043701172 126.0313339233398 C 230.6226043701172 137.8987884521484 221.0023193359375 147.5156402587891 209.1382751464844 147.5156402587891 C 197.2742614746094 147.5156402587891 187.6539916992188 137.8987884521484 187.6539916992188 126.0313339233398 Z">
 				</path>
 			</svg>
-			<img id="Group_145" src="Group_145.png" srcset="Group_145.png 1x, Group_145@2x.png 2x">
+			<img id="Group_145" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_145.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_145.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_145@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_447" viewBox="190.446 106.479 24.012 23.531">
@@ -30171,7 +30175,7 @@ window.application = new Application();
 				<path id="Path_386_d" d="M 187.6539916992188 126.0313339233398 C 187.6539916992188 114.1672134399414 197.2742614746094 104.5469818115234 209.1382751464844 104.5469818115234 C 221.0023193359375 104.5469818115234 230.6226043701172 114.1672134399414 230.6226043701172 126.0313339233398 C 230.6226043701172 137.8987884521484 221.0023193359375 147.5156402587891 209.1382751464844 147.5156402587891 C 197.2742614746094 147.5156402587891 187.6539916992188 137.8987884521484 187.6539916992188 126.0313339233398 Z">
 				</path>
 			</svg>
-			<img id="Group_145_d" src="Group_145_d.png" srcset="Group_145_d.png 1x, Group_145_d@2x.png 2x">
+			<img id="Group_145_d" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_145_d.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_145_d.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_145_d@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_447_d" viewBox="190.446 106.479 24.012 23.531">
@@ -30185,7 +30189,7 @@ window.application = new Application();
 				<path id="Path_448" d="M 226.0169219970703 128.5272216796875 C 226.0169219970703 120.8486709594727 232.2426452636719 114.6229858398438 239.9212646484375 114.6229858398438 C 247.6031188964844 114.6229858398438 253.8254089355469 120.8486709594727 253.8254089355469 128.5272216796875 C 253.8254089355469 136.2057800292969 247.6031188964844 142.4314422607422 239.9212646484375 142.4314422607422 C 232.2426452636719 142.4314422607422 226.0169219970703 136.2057800292969 226.0169219970703 128.5272216796875 Z">
 				</path>
 			</svg>
-			<img id="Group_149" src="Group_149.png" srcset="Group_149.png 1x, Group_149@2x.png 2x">
+			<img id="Group_149" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_149.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_149.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_149@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_489" viewBox="227.824 115.873 15.542 15.228">
@@ -30199,7 +30203,7 @@ window.application = new Application();
 				<ellipse id="Ellipse_20" rx="13.904215812683105" ry="13.904215812683105" cx="13.904215812683105" cy="13.904215812683105">
 				</ellipse>
 			</svg>
-			<img id="Group_153" src="Group_153.png" srcset="Group_153.png 1x, Group_153@2x.png 2x">
+			<img id="Group_153" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_153.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_153.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_153@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_529" viewBox="250.359 134.293 15.538 15.232">
@@ -30213,7 +30217,7 @@ window.application = new Application();
 				<ellipse id="Ellipse_22" rx="13.904215812683105" ry="13.904215812683105" cx="13.904215812683105" cy="13.904215812683105">
 				</ellipse>
 			</svg>
-			<img id="Group_157" src="Group_157.png" srcset="Group_157.png 1x, Group_157@2x.png 2x">
+			<img id="Group_157" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_157.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_157.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_157@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_569" viewBox="238.665 123.767 15.542 15.232">
@@ -30227,7 +30231,7 @@ window.application = new Application();
 				<ellipse id="Ellipse_24" rx="13.90419864654541" ry="13.90419864654541" cx="13.90419864654541" cy="13.90419864654541">
 				</ellipse>
 			</svg>
-			<img id="Group_161" src="Group_161.png" srcset="Group_161.png 1x, Group_161@2x.png 2x">
+			<img id="Group_161" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_161.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_161.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_161@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_609" viewBox="-2.289 126.364 15.542 15.228">
@@ -30241,7 +30245,7 @@ window.application = new Application();
 				<ellipse id="Ellipse_26_ew" rx="12.891950607299805" ry="12.891950607299805" cx="12.891950607299805" cy="12.891950607299805">
 				</ellipse>
 			</svg>
-			<img id="Group_165_ex" src="Group_165_ex.png" srcset="Group_165_ex.png 1x, Group_165_ex@2x.png 2x">
+			<img id="Group_165_ex" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_165_ex.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_165_ex.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_165_ex@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_649_ey" viewBox="246.999 125.539 14.748 12.463">
@@ -30255,7 +30259,7 @@ window.application = new Application();
 				<ellipse id="Ellipse_28" rx="12.891950607299805" ry="12.891950607299805" cx="12.891950607299805" cy="12.891950607299805">
 				</ellipse>
 			</svg>
-			<img id="Group_169" src="Group_169.png" srcset="Group_169.png 1x, Group_169@2x.png 2x">
+			<img id="Group_169" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_169.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_169.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_169@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_689" viewBox="234.661 132.532 14.748 12.462">
@@ -30269,7 +30273,7 @@ window.application = new Application();
 				<ellipse id="Ellipse_28_e" rx="12.891950607299805" ry="12.891950607299805" cx="12.891950607299805" cy="12.891950607299805">
 				</ellipse>
 			</svg>
-			<img id="Group_169_e" src="Group_169_e.png" srcset="Group_169_e.png 1x, Group_169_e@2x.png 2x">
+			<img id="Group_169_e" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_169_e.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_169_e.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_169_e@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_689_e" viewBox="234.661 132.532 14.748 12.462">
@@ -30283,7 +30287,7 @@ window.application = new Application();
 				<ellipse id="Ellipse_30" rx="12.891945838928223" ry="12.891945838928223" cx="12.891945838928223" cy="12.891945838928223">
 				</ellipse>
 			</svg>
-			<img id="Group_173" src="Group_173.png" srcset="Group_173.png 1x, Group_173@2x.png 2x">
+			<img id="Group_173" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_173.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_173.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_173@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_729" viewBox="216.827 118.72 14.751 12.463">
@@ -30297,7 +30301,7 @@ window.application = new Application();
 				<ellipse id="Ellipse_32" rx="14.937529563903809" ry="14.937529563903809" cx="14.937529563903809" cy="14.937529563903809">
 				</ellipse>
 			</svg>
-			<img id="Group_177" src="Group_177.png" srcset="Group_177.png 1x, Group_177@2x.png 2x">
+			<img id="Group_177" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_177.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_177.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_177@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_774" viewBox="206.243 104.247 17.09 14.439">
@@ -30311,7 +30315,7 @@ window.application = new Application();
 				<ellipse id="Ellipse_34" rx="21.483638763427734" ry="21.483638763427734" cx="21.483638763427734" cy="21.483638763427734">
 				</ellipse>
 			</svg>
-			<img id="Group_181" src="Group_181.png" srcset="Group_181.png 1x, Group_181@2x.png 2x">
+			<img id="Group_181" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_181.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_181.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_181@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_838" viewBox="178.379 115.617 24.581 20.768">
@@ -30325,7 +30329,7 @@ window.application = new Application();
 				<path id="Path_839" d="M 112.3419952392578 122.3289413452148 C 112.3419952392578 110.4648361206055 121.9622344970703 100.8479995727539 133.8262939453125 100.8479995727539 C 145.6903839111328 100.8479995727539 155.3106231689453 110.4648361206055 155.3106231689453 122.3289413452148 C 155.3106231689453 134.1963806152344 145.6903839111328 143.8132476806641 133.8262939453125 143.8132476806641 C 121.9622344970703 143.8132476806641 112.3419952392578 134.1963806152344 112.3419952392578 122.3289413452148 Z">
 				</path>
 			</svg>
-			<img id="Group_185" src="Group_185.png" srcset="Group_185.png 1x, Group_185@2x.png 2x">
+			<img id="Group_185" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_185.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_185.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_185@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_904" viewBox="115.05 104.725 24.581 20.768">
@@ -30339,7 +30343,7 @@ window.application = new Application();
 				<path id="Path_839_fv" d="M 112.3419952392578 115.9448471069336 C 112.3419952392578 107.6067276000977 119.1031112670898 100.8479995727539 127.4411926269531 100.8479995727539 C 135.779296875 100.8479995727539 142.5404205322266 107.6067276000977 142.5404205322266 115.9448471069336 C 142.5404205322266 124.2853012084961 135.779296875 131.0440521240234 127.4411926269531 131.0440521240234 C 119.1031112670898 131.0440521240234 112.3419952392578 124.2853012084961 112.3419952392578 115.9448471069336 Z">
 				</path>
 			</svg>
-			<img id="Group_185_fw" src="Group_185_fw.png" srcset="Group_185_fw.png 1x, Group_185_fw@2x.png 2x">
+			<img id="Group_185_fw" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_185_fw.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_185_fw.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_185_fw@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_904_fx" viewBox="115.05 104.725 17.276 14.596">
@@ -30353,7 +30357,7 @@ window.application = new Application();
 				<path id="Path_905" d="M 101.3380126953125 141.3257751464844 C 101.3380126953125 132.5858764648438 108.4223937988281 125.4989624023438 117.1647796630859 125.4989624023438 C 125.9046478271484 125.4989624023438 132.9890747070312 132.5858764648438 132.9890747070312 141.3257751464844 C 132.9890747070312 150.0656280517578 125.9046478271484 157.1525573730469 117.1647796630859 157.1525573730469 C 108.4223937988281 157.1525573730469 101.3380126953125 150.0656280517578 101.3380126953125 141.3257751464844 Z">
 				</path>
 			</svg>
-			<img id="Group_189" src="Group_189.png" srcset="Group_189.png 1x, Group_189@2x.png 2x">
+			<img id="Group_189" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_189.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_189.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_189@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_970" viewBox="104.046 129.376 18.108 15.299">
@@ -30367,7 +30371,7 @@ window.application = new Application();
 				<ellipse id="Ellipse_36" rx="29.87810707092285" ry="29.87810707092285" cx="29.87810707092285" cy="29.87810707092285">
 				</ellipse>
 			</svg>
-			<img id="Group_193" src="Group_193.png" srcset="Group_193.png 1x, Group_193@2x.png 2x">
+			<img id="Group_193" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_193.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_193.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_193@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_1058" viewBox="128.767 118.872 34.183 28.885">
@@ -30381,7 +30385,7 @@ window.application = new Application();
 				<path id="Path_1059" d="M 98.00499725341797 131.6503295898438 C 98.00499725341797 119.7828674316406 107.6218643188477 110.1660003662109 119.4859466552734 110.1660003662109 C 131.3534088134766 110.1660003662109 140.9702453613281 119.7828674316406 140.9702453613281 131.6503295898438 C 140.9702453613281 143.5143585205078 131.3534088134766 153.1312255859375 119.4859466552734 153.1312255859375 C 107.6218643188477 153.1312255859375 98.00499725341797 143.5143585205078 98.00499725341797 131.6503295898438 Z">
 				</path>
 			</svg>
-			<img id="Group_197" src="Group_197.png" srcset="Group_197.png 1x, Group_197@2x.png 2x">
+			<img id="Group_197" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_197.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_197.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_197@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_1124" viewBox="100.712 114.043 24.581 20.768">
@@ -30395,7 +30399,7 @@ window.application = new Application();
 				<path id="Path_1125" d="M 42.33798980712891 131.3728332519531 C 42.33798980712891 120.1596374511719 51.42463684082031 111.0729675292969 62.63780975341797 111.0729675292969 C 73.8477783203125 111.0729675292969 82.93442535400391 120.1596374511719 82.93442535400391 131.3728332519531 C 82.93442535400391 142.5827789306641 73.8477783203125 151.6726531982422 62.63780975341797 151.6726531982422 C 51.42463684082031 151.6726531982422 42.33798980712891 142.5827789306641 42.33798980712891 131.3728332519531 Z">
 				</path>
 			</svg>
-			<img id="Group_201" src="Group_201.png" srcset="Group_201.png 1x, Group_201@2x.png 2x">
+			<img id="Group_201" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_201.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_201.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_201@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_1190" viewBox="45.046 114.95 23.226 19.623">
@@ -30409,7 +30413,7 @@ window.application = new Application();
 				<path id="Path_1191" d="M 58.72700500488281 127.3363189697266 C 58.72700500488281 115.4722442626953 68.34385681152344 105.8519744873047 80.2113037109375 105.8519744873047 C 92.07537841796875 105.8519744873047 101.6956329345703 115.4722442626953 101.6956329345703 127.3363189697266 C 101.6956329345703 139.2003936767578 92.07537841796875 148.8206939697266 80.2113037109375 148.8206939697266 C 68.34385681152344 148.8206939697266 58.72700500488281 139.2003936767578 58.72700500488281 127.3363189697266 Z">
 				</path>
 			</svg>
-			<img id="Group_205" src="Group_205.png" srcset="Group_205.png 1x, Group_205@2x.png 2x">
+			<img id="Group_205" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_205.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_205.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_205@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_1256" viewBox="61.435 109.729 24.581 20.771">
@@ -30423,7 +30427,7 @@ window.application = new Application();
 				<path id="Path_1191_gp" d="M 58.72700500488281 127.3363189697266 C 58.72700500488281 115.4722442626953 68.34385681152344 105.8519744873047 80.2113037109375 105.8519744873047 C 92.07537841796875 105.8519744873047 101.6956329345703 115.4722442626953 101.6956329345703 127.3363189697266 C 101.6956329345703 139.2003936767578 92.07537841796875 148.8206939697266 80.2113037109375 148.8206939697266 C 68.34385681152344 148.8206939697266 58.72700500488281 139.2003936767578 58.72700500488281 127.3363189697266 Z">
 				</path>
 			</svg>
-			<img id="Group_205_gq" src="Group_205_gq.png" srcset="Group_205_gq.png 1x, Group_205_gq@2x.png 2x">
+			<img id="Group_205_gq" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_205_gq.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_205_gq.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_205_gq@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_1256_gr" viewBox="61.435 109.729 24.581 20.771">
@@ -30437,7 +30441,7 @@ window.application = new Application();
 				<path id="Path_1257" d="M 31.42399597167969 121.3733291625977 C 31.42399597167969 109.5092163085938 41.04425430297852 99.88898468017578 52.90831756591797 99.88898468017578 C 64.77239227294922 99.88898468017578 74.39263916015625 109.5092163085938 74.39263916015625 121.3733291625977 C 74.39263916015625 133.2373504638672 64.77239227294922 142.8575897216797 52.90831756591797 142.8575897216797 C 41.04425430297852 142.8575897216797 31.42399597167969 133.2373504638672 31.42399597167969 121.3733291625977 Z">
 				</path>
 			</svg>
-			<img id="Group_209" src="Group_209.png" srcset="Group_209.png 1x, Group_209@2x.png 2x">
+			<img id="Group_209" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_209.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_209.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_209@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_1322" viewBox="34.132 103.766 24.581 20.771">
@@ -30451,7 +30455,7 @@ window.application = new Application();
 				<path id="Path_1323" d="M 3.04200005531311 126.7124557495117 C 3.04200005531311 118.3720016479492 9.800615310668945 111.6100006103516 18.14450263977051 111.6100006103516 C 26.48499298095703 111.6100006103516 33.24699783325195 118.3720016479492 33.24699783325195 126.7124557495117 C 33.24699783325195 135.0529632568359 26.48499298095703 141.8150177001953 18.14450263977051 141.8150177001953 C 9.800615310668945 141.8150177001953 3.04200005531311 135.0529632568359 3.04200005531311 126.7124557495117 Z">
 				</path>
 			</svg>
-			<img id="Group_213" src="Group_213.png" srcset="Group_213.png 1x, Group_213@2x.png 2x">
+			<img id="Group_213" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_213.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_213.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_213@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_1370" viewBox="4.945 114.335 17.28 14.602">
@@ -30465,7 +30469,7 @@ window.application = new Application();
 				<ellipse id="Ellipse_38" rx="21.483642578125" ry="21.483642578125" cx="21.483642578125" cy="21.483642578125">
 				</ellipse>
 			</svg>
-			<img id="Group_217" src="Group_217.png" srcset="Group_217.png 1x, Group_217@2x.png 2x">
+			<img id="Group_217" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_217.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_217.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_217@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_1430" viewBox="52.064 109.668 24.012 23.531">
@@ -30479,7 +30483,7 @@ window.application = new Application();
 				<ellipse id="Ellipse_38_g" rx="21.483642578125" ry="21.483642578125" cx="21.483642578125" cy="21.483642578125">
 				</ellipse>
 			</svg>
-			<img id="Group_217_ha" src="Group_217_ha.png" srcset="Group_217_ha.png 1x, Group_217_ha@2x.png 2x">
+			<img id="Group_217_ha" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_217_ha.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_217_ha.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_217_ha@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_1430_hb" viewBox="52.064 109.668 24.012 23.531">
@@ -30493,7 +30497,7 @@ window.application = new Application();
 				<path id="Path_1431" d="M 116.0860061645508 128.6219787597656 C 116.0860061645508 119.2260208129883 123.6179428100586 111.6119689941406 132.9099273681641 111.6119689941406 C 142.20458984375 111.6119689941406 149.7365112304688 119.2260208129883 149.7365112304688 128.6219787597656 C 149.7365112304688 138.0152282714844 142.20458984375 145.6292419433594 132.9099273681641 145.6292419433594 C 123.6179428100586 145.6292419433594 116.0860061645508 138.0152282714844 116.0860061645508 128.6219787597656 Z">
 				</path>
 			</svg>
-			<img id="Group_221" src="Group_221.png" srcset="Group_221.png 1x, Group_221@2x.png 2x">
+			<img id="Group_221" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_221.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_221.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_221@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_1492" viewBox="118.878 113.543 14.697 23.531">
@@ -30507,7 +30511,7 @@ window.application = new Application();
 				<ellipse id="Ellipse_40" rx="21.352384567260742" ry="21.352384567260742" cx="21.352384567260742" cy="21.352384567260742">
 				</ellipse>
 			</svg>
-			<img id="Group_225" src="Group_225.png" srcset="Group_225.png 1x, Group_225@2x.png 2x">
+			<img id="Group_225" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_225.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_225.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_225@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_1583" viewBox="67.423 96.365 23.867 23.387">
@@ -31088,7 +31092,7 @@ window.application = new Application();
 				<path id="Path_905_mi" d="M 101.3380126953125 138.2934112548828 C 101.3380126953125 131.2280426025391 107.0650482177734 125.4989624023438 114.1324234008789 125.4989624023438 C 121.1977615356445 125.4989624023438 126.9248275756836 131.2280426025391 126.9248275756836 138.2934112548828 C 126.9248275756836 145.3587341308594 121.1977615356445 151.0878295898438 114.1324234008789 151.0878295898438 C 107.0650482177734 151.0878295898438 101.3380126953125 145.3587341308594 101.3380126953125 138.2934112548828 Z">
 				</path>
 			</svg>
-			<img id="Group_189_mj" src="Group_189_mj.png" srcset="Group_189_mj.png 1x, Group_189_mj@2x.png 2x">
+			<img id="Group_189_mj" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_189_mj.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_189_mj.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_189_mj@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_970_mk" viewBox="104.046 129.376 14.639 12.368">
@@ -31102,7 +31106,7 @@ window.application = new Application();
 				<path id="Path_1059_mn" d="M 98.00498962402344 126.8024978637695 C 98.00498962402344 117.6128692626953 105.4518585205078 110.1660003662109 114.6388702392578 110.1660003662109 C 123.8285064697266 110.1660003662109 131.2753448486328 117.6128692626953 131.2753448486328 126.8024978637695 C 131.2753448486328 135.9894714355469 123.8285064697266 143.4363403320312 114.6388702392578 143.4363403320312 C 105.4518585205078 143.4363403320312 98.00498962402344 135.9894714355469 98.00498962402344 126.8024978637695 Z">
 				</path>
 			</svg>
-			<img id="Group_197_mo" src="Group_197_mo.png" srcset="Group_197_mo.png 1x, Group_197_mo@2x.png 2x">
+			<img id="Group_197_mo" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_197_mo.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_197_mo.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_197_mo@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_1124_mp" viewBox="100.712 114.043 19.034 16.082">
@@ -31347,7 +31351,7 @@ window.application = new Application();
 				</path>
 			</svg>
 		</div>
-		<img id="Mask_Group_66" src="Mask_Group_66.png" srcset="Mask_Group_66.png 1x, Mask_Group_66@2x.png 2x">
+		<img id="Mask_Group_66" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66@2x.png 2x">
 		</svg>
 	</div>
 	<div id="Group_939">
@@ -31433,7 +31437,7 @@ window.application = new Application();
 				</path>
 			</svg>
 		</div>
-		<img id="Mask_Group_66_oa" src="Mask_Group_66_oa.png" srcset="Mask_Group_66_oa.png 1x, Mask_Group_66_oa@2x.png 2x">
+		<img id="Mask_Group_66_oa" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_oa.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_oa.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_oa@2x.png 2x">
 		</svg>
 	</div>
 	<div id="Group_869">
@@ -31519,7 +31523,7 @@ window.application = new Application();
 				</path>
 			</svg>
 		</div>
-		<img id="Mask_Group_66_oq" src="Mask_Group_66_oq.png" srcset="Mask_Group_66_oq.png 1x, Mask_Group_66_oq@2x.png 2x">
+		<img id="Mask_Group_66_oq" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_oq.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_oq.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_oq@2x.png 2x">
 		</svg>
 	</div>
 	<div id="Group_915">
@@ -31605,7 +31609,7 @@ window.application = new Application();
 				</path>
 			</svg>
 		</div>
-		<img id="Mask_Group_66_o" src="Mask_Group_66_o.png" srcset="Mask_Group_66_o.png 1x, Mask_Group_66_o@2x.png 2x">
+		<img id="Mask_Group_66_o" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_o.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_o.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_o@2x.png 2x">
 		</svg>
 	</div>
 	<div id="Group_934">
@@ -31691,7 +31695,7 @@ window.application = new Application();
 				</path>
 			</svg>
 		</div>
-		<img id="Mask_Group_66_pm" src="Mask_Group_66_pm.png" srcset="Mask_Group_66_pm.png 1x, Mask_Group_66_pm@2x.png 2x">
+		<img id="Mask_Group_66_pm" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_pm.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_pm.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_pm@2x.png 2x">
 		</svg>
 	</div>
 	<div id="Group_950">
@@ -31777,7 +31781,7 @@ window.application = new Application();
 				</path>
 			</svg>
 		</div>
-		<img id="Mask_Group_66_p" src="Mask_Group_66_p.png" srcset="Mask_Group_66_p.png 1x, Mask_Group_66_p@2x.png 2x">
+		<img id="Mask_Group_66_p" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_p.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_p.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_p@2x.png 2x">
 		</svg>
 	</div>
 	<div id="Group_873">
@@ -31863,7 +31867,7 @@ window.application = new Application();
 				</path>
 			</svg>
 		</div>
-		<img id="Mask_Group_66_qi" src="Mask_Group_66_qi.png" srcset="Mask_Group_66_qi.png 1x, Mask_Group_66_qi@2x.png 2x">
+		<img id="Mask_Group_66_qi" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_qi.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_qi.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_qi@2x.png 2x">
 		</svg>
 	</div>
 	<div id="Group_916">
@@ -31949,7 +31953,7 @@ window.application = new Application();
 				</path>
 			</svg>
 		</div>
-		<img id="Mask_Group_66_qy" src="Mask_Group_66_qy.png" srcset="Mask_Group_66_qy.png 1x, Mask_Group_66_qy@2x.png 2x">
+		<img id="Mask_Group_66_qy" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_qy.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_qy.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_qy@2x.png 2x">
 		</svg>
 	</div>
 	<div id="Group_935">
@@ -32035,7 +32039,7 @@ window.application = new Application();
 				</path>
 			</svg>
 		</div>
-		<img id="Mask_Group_66_re" src="Mask_Group_66_re.png" srcset="Mask_Group_66_re.png 1x, Mask_Group_66_re@2x.png 2x">
+		<img id="Mask_Group_66_re" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_re.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_re.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_re@2x.png 2x">
 		</svg>
 	</div>
 	<div id="Group_951">
@@ -32121,7 +32125,7 @@ window.application = new Application();
 				</path>
 			</svg>
 		</div>
-		<img id="Mask_Group_66_ru" src="Mask_Group_66_ru.png" srcset="Mask_Group_66_ru.png 1x, Mask_Group_66_ru@2x.png 2x">
+		<img id="Mask_Group_66_ru" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_ru.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_ru.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_ru@2x.png 2x">
 		</svg>
 	</div>
 	<div id="Group_866">
@@ -32207,7 +32211,7 @@ window.application = new Application();
 				</path>
 			</svg>
 		</div>
-		<img id="Mask_Group_66_sa" src="Mask_Group_66_sa.png" srcset="Mask_Group_66_sa.png 1x, Mask_Group_66_sa@2x.png 2x">
+		<img id="Mask_Group_66_sa" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_sa.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_sa.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_sa@2x.png 2x">
 		</svg>
 	</div>
 	<div id="Group_881">
@@ -32293,7 +32297,7 @@ window.application = new Application();
 				</path>
 			</svg>
 		</div>
-		<img id="Mask_Group_66_sq" src="Mask_Group_66_sq.png" srcset="Mask_Group_66_sq.png 1x, Mask_Group_66_sq@2x.png 2x">
+		<img id="Mask_Group_66_sq" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_sq.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_sq.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_sq@2x.png 2x">
 		</svg>
 	</div>
 	<div id="Group_928">
@@ -32379,7 +32383,7 @@ window.application = new Application();
 				</path>
 			</svg>
 		</div>
-		<img id="Mask_Group_66_s" src="Mask_Group_66_s.png" srcset="Mask_Group_66_s.png 1x, Mask_Group_66_s@2x.png 2x">
+		<img id="Mask_Group_66_s" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_s.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_s.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_s@2x.png 2x">
 		</svg>
 	</div>
 	<div id="Group_867">
@@ -32465,7 +32469,7 @@ window.application = new Application();
 				</path>
 			</svg>
 		</div>
-		<img id="Mask_Group_66_tm" src="Mask_Group_66_tm.png" srcset="Mask_Group_66_tm.png 1x, Mask_Group_66_tm@2x.png 2x">
+		<img id="Mask_Group_66_tm" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_tm.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_tm.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_tm@2x.png 2x">
 		</svg>
 	</div>
 	<div id="Group_882">
@@ -32551,7 +32555,7 @@ window.application = new Application();
 				</path>
 			</svg>
 		</div>
-		<img id="Mask_Group_66_t" src="Mask_Group_66_t.png" srcset="Mask_Group_66_t.png 1x, Mask_Group_66_t@2x.png 2x">
+		<img id="Mask_Group_66_t" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_t.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_t.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_t@2x.png 2x">
 		</svg>
 	</div>
 	<div id="Group_929">
@@ -32637,7 +32641,7 @@ window.application = new Application();
 				</path>
 			</svg>
 		</div>
-		<img id="Mask_Group_66_ui" src="Mask_Group_66_ui.png" srcset="Mask_Group_66_ui.png 1x, Mask_Group_66_ui@2x.png 2x">
+		<img id="Mask_Group_66_ui" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_ui.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_ui.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_ui@2x.png 2x">
 		</svg>
 	</div>
 	<div id="Group_868">
@@ -32723,7 +32727,7 @@ window.application = new Application();
 				</path>
 			</svg>
 		</div>
-		<img id="Mask_Group_66_uy" src="Mask_Group_66_uy.png" srcset="Mask_Group_66_uy.png 1x, Mask_Group_66_uy@2x.png 2x">
+		<img id="Mask_Group_66_uy" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_uy.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_uy.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_uy@2x.png 2x">
 		</svg>
 	</div>
 	<div id="Group_883">
@@ -32809,7 +32813,7 @@ window.application = new Application();
 				</path>
 			</svg>
 		</div>
-		<img id="Mask_Group_66_ve" src="Mask_Group_66_ve.png" srcset="Mask_Group_66_ve.png 1x, Mask_Group_66_ve@2x.png 2x">
+		<img id="Mask_Group_66_ve" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_ve.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_ve.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_ve@2x.png 2x">
 		</svg>
 	</div>
 	<div id="Group_930">
@@ -32895,7 +32899,7 @@ window.application = new Application();
 				</path>
 			</svg>
 		</div>
-		<img id="Mask_Group_66_vu" src="Mask_Group_66_vu.png" srcset="Mask_Group_66_vu.png 1x, Mask_Group_66_vu@2x.png 2x">
+		<img id="Mask_Group_66_vu" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_vu.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_vu.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_vu@2x.png 2x">
 		</svg>
 	</div>
 	<div id="Group_812">
@@ -32981,7 +32985,7 @@ window.application = new Application();
 				</path>
 			</svg>
 		</div>
-		<img id="Mask_Group_66_wa" src="Mask_Group_66_wa.png" srcset="Mask_Group_66_wa.png 1x, Mask_Group_66_wa@2x.png 2x">
+		<img id="Mask_Group_66_wa" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_wa.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_wa.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_wa@2x.png 2x">
 		</svg>
 	</div>
 	<div id="Group_764">
@@ -33973,7 +33977,7 @@ window.application = new Application();
 				</path>
 			</svg>
 		</div>
-		<img id="Mask_Group_66_" src="Mask_Group_66_.png" srcset="Mask_Group_66_.png 1x, Mask_Group_66_@2x.png 2x">
+		<img id="Mask_Group_66_" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_@2x.png 2x">
 		</svg>
 	</div>
 	<div id="SUB_category_Nameplate" class="SUB_category_Nameplate">
@@ -34067,7 +34071,7 @@ window.application = new Application();
 				</path>
 			</svg>
 		</div>
-		<img id="Mask_Group_66_q" src="Mask_Group_66_q.png" srcset="Mask_Group_66_q.png 1x, Mask_Group_66_q@2x.png 2x">
+		<img id="Mask_Group_66_q" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_q.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_q.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_q@2x.png 2x">
 		</svg>
 	</div>
 	<div id="SUB_category_Nameplate_p" class="SUB_category_Nameplate">
@@ -34169,7 +34173,7 @@ window.application = new Application();
 						</path>
 					</svg>
 				</div>
-				<img id="Mask_Group_66_b" src="Mask_Group_66_b.png" srcset="Mask_Group_66_b.png 1x, Mask_Group_66_b@2x.png 2x">
+				<img id="Mask_Group_66_b" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_b.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_b.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_b@2x.png 2x">
 				</svg>
 			</div>
 			<div id="SUB_category_Nameplate_c" class="SUB_category_Nameplate">
@@ -34268,7 +34272,7 @@ window.application = new Application();
 						</path>
 					</svg>
 				</div>
-				<img id="Mask_Group_66_w" src="Mask_Group_66_w.png" srcset="Mask_Group_66_w.png 1x, Mask_Group_66_w@2x.png 2x">
+				<img id="Mask_Group_66_w" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_w.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_w.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_w@2x.png 2x">
 				</svg>
 			</div>
 			<div id="SUB_category_Nameplate_x" class="SUB_category_Nameplate">
@@ -34367,7 +34371,7 @@ window.application = new Application();
 						</path>
 					</svg>
 				</div>
-				<img id="Mask_Group_66_h" src="Mask_Group_66_h.png" srcset="Mask_Group_66_h.png 1x, Mask_Group_66_h@2x.png 2x">
+				<img id="Mask_Group_66_h" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_h.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_h.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_h@2x.png 2x">
 				</svg>
 			</div>
 			<div id="SUB_category_Nameplate_i" class="SUB_category_Nameplate">
@@ -34466,7 +34470,7 @@ window.application = new Application();
 						</path>
 					</svg>
 				</div>
-				<img id="Mask_Group_66_a" src="Mask_Group_66_a.png" srcset="Mask_Group_66_a.png 1x, Mask_Group_66_a@2x.png 2x">
+				<img id="Mask_Group_66_a" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_a.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_a.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_a@2x.png 2x">
 				</svg>
 			</div>
 			<div id="SUB_category_Nameplate_" class="SUB_category_Nameplate">
@@ -34566,7 +34570,7 @@ window.application = new Application();
 					</path>
 				</svg>
 			</div>
-			<img id="Mask_Group_66_n" src="Mask_Group_66_n.png" srcset="Mask_Group_66_n.png 1x, Mask_Group_66_n@2x.png 2x">
+			<img id="Mask_Group_66_n" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_n.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_n.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_n@2x.png 2x">
 			</svg>
 		</div>
 		<div id="SUB_category_Nameplate_o" class="SUB_category_Nameplate">
@@ -34665,7 +34669,7 @@ window.application = new Application();
 					</path>
 				</svg>
 			</div>
-			<img id="Mask_Group_66_c" src="Mask_Group_66_c.png" srcset="Mask_Group_66_c.png 1x, Mask_Group_66_c@2x.png 2x">
+			<img id="Mask_Group_66_c" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_c.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_c.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_c@2x.png 2x">
 			</svg>
 		</div>
 		<div id="SUB_category_Nameplate_a" class="SUB_category_Nameplate">
@@ -34764,7 +34768,7 @@ window.application = new Application();
 					</path>
 				</svg>
 			</div>
-			<img id="Mask_Group_66_u" src="Mask_Group_66_u.png" srcset="Mask_Group_66_u.png 1x, Mask_Group_66_u@2x.png 2x">
+			<img id="Mask_Group_66_u" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_u.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_u.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_u@2x.png 2x">
 			</svg>
 		</div>
 		<div id="SUB_category_Nameplate_u" class="SUB_category_Nameplate">
@@ -34862,7 +34866,7 @@ window.application = new Application();
 				</path>
 			</svg>
 		</div>
-		<img id="Mask_Group_66_d" src="Mask_Group_66_d.png" srcset="Mask_Group_66_d.png 1x, Mask_Group_66_d@2x.png 2x">
+		<img id="Mask_Group_66_d" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_d.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_d.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_d@2x.png 2x">
 		</svg>
 	</div>
 	<div id="SUB_category_Nameplate_e" class="SUB_category_Nameplate">
@@ -34894,7 +34898,7 @@ window.application = new Application();
 				<ellipse id="Ellipse_43" rx="43.55142593383789" ry="43.55142593383789" cx="43.55142593383789" cy="43.55142593383789">
 				</ellipse>
 			</svg>
-			<img id="Group_508" src="Group_508.png" srcset="Group_508.png 1x, Group_508@2x.png 2x">
+			<img id="Group_508" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_508.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_508.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_508@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_1867" viewBox="67.423 96.365 48.68 47.702">
@@ -34908,7 +34912,7 @@ window.application = new Application();
 				<ellipse id="Ellipse_43_s" rx="43.55142593383789" ry="43.55142593383789" cx="43.55142593383789" cy="43.55142593383789">
 				</ellipse>
 			</svg>
-			<img id="Group_508_t" src="Group_508_t.png" srcset="Group_508_t.png 1x, Group_508_t@2x.png 2x">
+			<img id="Group_508_t" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_508_t.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_508_t.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_508_t@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_1867_u" viewBox="67.423 96.365 48.68 47.702">
@@ -34922,7 +34926,7 @@ window.application = new Application();
 				<ellipse id="Ellipse_43_x" rx="43.55142593383789" ry="43.55142593383789" cx="43.55142593383789" cy="43.55142593383789">
 				</ellipse>
 			</svg>
-			<img id="Group_508_y" src="Group_508_y.png" srcset="Group_508_y.png 1x, Group_508_y@2x.png 2x">
+			<img id="Group_508_y" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_508_y.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_508_y.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_508_y@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_1867_z" viewBox="67.423 96.365 48.68 47.702">
@@ -34936,7 +34940,7 @@ window.application = new Application();
 				<ellipse id="Ellipse_43_" rx="43.55142593383789" ry="43.55142593383789" cx="43.55142593383789" cy="43.55142593383789">
 				</ellipse>
 			</svg>
-			<img id="Group_508_" src="Group_508_.png" srcset="Group_508_.png 1x, Group_508_@2x.png 2x">
+			<img id="Group_508_" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_508_.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_508_.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_508_@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_1867_" viewBox="67.423 96.365 48.68 47.702">
@@ -34950,7 +34954,7 @@ window.application = new Application();
 				<ellipse id="Ellipse_43_baa" rx="43.55142593383789" ry="43.55142593383789" cx="43.55142593383789" cy="43.55142593383789">
 				</ellipse>
 			</svg>
-			<img id="Group_508_baa" src="Group_508_baa.png" srcset="Group_508_baa.png 1x, Group_508_baa@2x.png 2x">
+			<img id="Group_508_baa" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_508_baa.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_508_baa.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_508_baa@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_1867_baa" viewBox="67.423 96.365 48.68 47.702">
@@ -35100,7 +35104,7 @@ window.application = new Application();
 					</path>
 				</svg>
 			</div>
-			<img id="Mask_Group_66_bbd" src="Mask_Group_66_bbd.png" srcset="Mask_Group_66_bbd.png 1x, Mask_Group_66_bbd@2x.png 2x">
+			<img id="Mask_Group_66_bbd" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_bbd.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_bbd.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_bbd@2x.png 2x">
 			</svg>
 		</div>
 		<div id="SUB_category_Nameplate_bbe" class="SUB_category_Nameplate">
@@ -35194,7 +35198,7 @@ window.application = new Application();
 					</path>
 				</svg>
 			</div>
-			<img id="Mask_Group_66_bbw" src="Mask_Group_66_bbw.png" srcset="Mask_Group_66_bbw.png 1x, Mask_Group_66_bbw@2x.png 2x">
+			<img id="Mask_Group_66_bbw" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_bbw.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_bbw.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_bbw@2x.png 2x">
 			</svg>
 		</div>
 		<div id="SUB_category_Nameplate_bbx" class="SUB_category_Nameplate">
@@ -35219,7 +35223,7 @@ window.application = new Application();
 		<div id="best_GIF">
 			<span>best GIF</span>
 		</div>
-		<img id="Image_1" src="Image_1.png" srcset="Image_1.png 1x, Image_1@2x.png 2x">
+		<img id="Image_1" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Image_1.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Image_1.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Image_1@2x.png 2x">
 	</div>
 	<svg class="Path_2610" viewBox="32.5 0 860 1">
 		<path id="Path_2610" d="M 32.5 0 L 892.5 0">
@@ -35377,7 +35381,7 @@ window.application = new Application();
 				<path id="Path_1632" d="M 877.7601318359375 2197.8291015625 L 877.7601318359375 2225.234375 L 940.0308837890625 2225.234375 L 922.9105224609375 2170.00830078125 L 877.7601318359375 2197.8291015625 Z">
 				</path>
 			</svg>
-			<img id="Group_304" src="Group_304.png" srcset="Group_304.png 1x, Group_304@2x.png 2x">
+			<img id="Group_304" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_304.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_304.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_304@2x.png 2x">
 			</svg>
 		</div>
 	</div>
@@ -36817,7 +36821,7 @@ window.application = new Application();
 				<ellipse id="Ellipse_26_bow" rx="26.22135353088379" ry="26.22135353088379" cx="26.22135353088379" cy="26.22135353088379">
 				</ellipse>
 			</svg>
-			<img id="Group_165_box" src="Group_165_box.png" srcset="Group_165_box.png 1x, Group_165_box@2x.png 2x">
+			<img id="Group_165_box" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_165_box.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_165_box.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_165_box@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_649_boy" viewBox="246.999 125.539 29.997 25.348">
@@ -39117,7 +39121,7 @@ window.application = new Application();
 				<ellipse id="Ellipse_26_b" rx="30.3037109375" ry="30.3037109375" cx="30.3037109375" cy="30.3037109375">
 				</ellipse>
 			</svg>
-			<img id="Group_165_b" src="Group_165_b.png" srcset="Group_165_b.png 1x, Group_165_b@2x.png 2x">
+			<img id="Group_165_b" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_165_b.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_165_b.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_165_b@2x.png 2x">
 			</svg>
 		</div>
 		<svg class="Path_649_b" viewBox="246.999 125.539 34.667 29.294">
@@ -39262,7 +39266,7 @@ window.application = new Application();
 			<path id="Path_1632_ba" d="M 925.4725952148438 2191.324951171875 L 925.4725952148438 2212.3232421875 L 877.7600708007812 2212.3232421875 L 890.8778076171875 2170.00830078125 L 925.4725952148438 2191.324951171875 Z">
 			</path>
 		</svg>
-		<img id="Group_304_bb" src="Group_304_bb.png" srcset="Group_304_bb.png 1x, Group_304_bb@2x.png 2x">
+		<img id="Group_304_bb" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_304_bb.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_304_bb.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Group_304_bb@2x.png 2x">
 		</svg>
 	</div>
 	<div id="Group_944">
@@ -39518,7 +39522,7 @@ window.application = new Application();
 				</path>
 			</svg>
 		</div>
-		<img id="Mask_Group_66_ba" src="Mask_Group_66_ba.png" srcset="Mask_Group_66_ba.png 1x, Mask_Group_66_ba@2x.png 2x">
+		<img id="Mask_Group_66_ba" src="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_ba.png" srcset="https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_ba.png 1x, https://raw.githubusercontent.com/MajorityLeader/allstar-trophycase/master/assets/exports/Mask_Group_66_ba@2x.png 2x">
 		</svg>
 	</div>
 	<div id="MAIN_Subcategory_Nameplate_ba" class="MAIN_Subcategory_Nameplate">
